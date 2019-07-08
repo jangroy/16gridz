@@ -1,19 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Pads from "./components/Pads";
+import Transport from "./components/Transport";
+import Top from "./components/Top";
 import styled from "styled-components";
+import PadsContext from "./context.js";
 
-const Main = styled.div`
+const MainContainer = styled.div`
   box-sizing: border-box;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
 `;
 
-function App() {
+const App = () => {
+  const [bpm, setBpm] = useState(120);
+  const [activePad, setActivePad] = useState(false);
+
   return (
-    <Main>
-      <Pads />
-    </Main>
+    <PadsContext.Provider value={{ bpm, setBpm, activePad }}>
+      <MainContainer>
+        <Top />
+        <Pads />
+      </MainContainer>
+    </PadsContext.Provider>
   );
-}
+};
 
 export default App;
