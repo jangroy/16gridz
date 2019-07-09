@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Pads from "./components/Pads";
+import DrumMachine from "./components/DrumMachine";
 import Transport from "./components/Transport";
 import Top from "./components/Top";
 import styled from "styled-components";
@@ -22,7 +22,7 @@ const App = () => {
     <PadsContext.Provider value={{ bpm, setBpm, activePad }}>
       <MainContainer>
         <Top />
-        <Pads />
+        <DrumMachine />
       </MainContainer>
     </PadsContext.Provider>
   );
