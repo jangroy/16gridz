@@ -15,15 +15,12 @@ const PadStyle = styled.div`
   user-select: none;
   font-size: 12px;
   /* box-shadow: 0 0 10px transparent; */
-
   :focus {
     outline: none;
   }
-  :active {
-    background: greenyellow;
-    box-shadow: 0 0 10px white;
-  }
 `;
+
+const PadKeyStyle = styled.span``;
 
 const DrumPad = props => {
   const [playing, audioPlay] = useAudio(props.uri);
@@ -48,7 +45,7 @@ const DrumPad = props => {
         audioPlay();
       }}
     >
-      {props.hotkey}
+      <PadKeyStyle>{props.hotkey}</PadKeyStyle>
     </PadStyle>
   );
 };

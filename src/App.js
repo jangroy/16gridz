@@ -3,6 +3,7 @@ import DrumMachine from "./components/DrumMachine";
 import Transport from "./components/Transport";
 import Top from "./components/Top";
 import styled from "styled-components";
+import theme from "styled-theming";
 import PadsContext from "./context.js";
 
 const MainContainer = styled.div`
