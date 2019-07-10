@@ -16,10 +16,9 @@ const MainContainer = styled.div`
 
 const App = () => {
   const [bpm, setBpm] = useState(120);
-  const [activePad, setActivePad] = useState(false);
 
   return (
-    <PadsContext.Provider value={{ bpm, setBpm, activePad }}>
+    <PadsContext.Provider value={{ bpm, setBpm }}>
       <MainContainer>
         <Top />
         <DrumMachine />

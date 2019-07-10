@@ -1,20 +1,25 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export const useAudio = url => {
   const [audio] = useState(new Audio(url));
   const [playing, setPlaying] = useState(false);
+  audio.volume = 0.5;
 
   const toggle = () => setPlaying(!playing);
   const play = () => {
-    // audio.pause();
-    audio.volume = 0.5;
-    audio.currentTime = 0;
-    audio.play();
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play();
+    }
+    setPlaying(true);
+    setTimeout(() => {
+      setPlaying(false);
+    }, 80);
+    // ended callback
+    // audio.onended = () => {
+    //   setPlaying(false);
+    // };
   };
 
-  //   useEffect(() => {
-  //     playing ? audio.play() : audio.pause();
-  //   }, [playing]);
-
-  return [playing, toggle, play];
+  return [playing, play];
 };
