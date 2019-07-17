@@ -41,9 +41,13 @@ const DrumPad = props => {
     <PadStyle
       assigned={props.uri}
       playing={playing}
-      onMouseDown={() => {
+      onTouchStart={e => {
         audioPlay();
       }}
+      onMouseDown={e => {
+        audioPlay();
+      }}
+      onTouchEnd={e => e.preventDefault()}
     >
       <PadKeyStyle>{props.hotkey}</PadKeyStyle>
     </PadStyle>

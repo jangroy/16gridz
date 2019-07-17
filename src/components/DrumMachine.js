@@ -4,13 +4,15 @@ import styled from "styled-components";
 import { data } from "../data";
 
 const PadsWrapper = styled.div`
-  width: 500px;
-  height: 500px;
+  max-width: 500px;
+  max-height: 500px;
+  width: 100vw;
+  height: 100vw;
   padding: 15px;
   background: #404040;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 10px;
+  grid-gap: 3%;
   box-sizing: border-box;
 `;
 
