@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DrumMachine from "./components/DrumMachine";
 import Transport from "./components/Transport";
+import Tone from "tone";
 import Top from "./components/Top";
 import styled from "styled-components";
 import theme from "styled-theming";
@@ -21,7 +22,7 @@ storageRef
     console.log("results", result.items);
     result.items.forEach(itemRef => {
       itemRef.getDownloadURL().then(url => {
-        console.log("url", url);
+        // console.log("url", url);
       });
     });
   })
@@ -46,6 +47,7 @@ const App = () => {
       <MainContainer>
         <Top />
         <DrumMachine />
+        <Transport />
       </MainContainer>
     </PadsContext.Provider>
   );
