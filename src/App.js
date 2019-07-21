@@ -3,40 +3,26 @@ import DrumMachine from "./components/DrumMachine";
 import Transport from "./components/Transport";
 import Tone from "tone";
 import Top from "./components/Top";
+import Sidebar from "./components/Sidebar";
 import styled from "styled-components";
 import theme from "styled-theming";
 import PadsContext from "./context.js";
-import { firebaseConfig } from "./config/firebaseconfig";
-import * as firebase from "firebase/app";
-// Add the Firebase products that you want to use
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
-firebase.initializeApp(firebaseConfig);
-const storage = firebase.storage();
-const storageRef = storage.ref("/samples/kicks/");
-
-storageRef
-  .listAll()
-  .then(result => {
-    console.log("results", result.items);
-    result.items.forEach(itemRef => {
-      itemRef.getDownloadURL().then(url => {
-        // console.log("url", url);
-      });
-    });
-  })
-  .catch(error => {
-    console.log(error);
-  });
 
 const MainContainer = styled.div`
-  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   width: 100vw;
   height: 100vh;
+`;
+
+const BodyContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const App = () => {
@@ -45,9 +31,12 @@ const App = () => {
   return (
     <PadsContext.Provider value={{ bpm, setBpm }}>
       <MainContainer>
-        <Top />
-        <DrumMachine />
-        <Transport />
+        <Sidebar />
+        <BodyContainer>
+          {/* <Top /> */}
+          {/* <Transport /> */}
+          <DrumMachine />
+        </BodyContainer>
       </MainContainer>
     </PadsContext.Provider>
   );
