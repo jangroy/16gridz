@@ -3,8 +3,9 @@ import { useAudio } from "./Audio";
 import styled from "styled-components";
 
 const PadStyle = styled.div`
-  background: ${props => (props.assigned ? "greenyellow" : "white")};
-  box-shadow: 0 0 10px ${props => (props.playing ? "white" : "transparent")};
+  background: ${props => (props.assigned ? props.color : "white")};
+  box-shadow: 0 0 10px
+    ${props => (props.playing && props.assigned ? "white" : "transparent")};
   border-radius: 3px;
   border: 1px solid transparent;
   box-shadow: 5 5 20px grey;
@@ -20,7 +21,9 @@ const PadStyle = styled.div`
   }
 `;
 
-const PadKeyStyle = styled.span``;
+const PadKeyStyle = styled.span`
+  font-size: 25px;
+`;
 
 const DrumPad = props => {
   const [playing, audioPlay] = useAudio(props.uri);
@@ -39,6 +42,7 @@ const DrumPad = props => {
   };
   return (
     <PadStyle
+      color={props.color}
       assigned={props.uri}
       playing={playing}
       onTouchStart={e => {
