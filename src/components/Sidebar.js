@@ -9,7 +9,9 @@ import "firebase/storage";
 
 const SidebarStyle = styled.div`
   /* width: 70px; */
-  width: 300px;
+  /* width: 300px; */
+  /* width: 100%; */
+  flex: 1 15%;
   display: flex;
   flex-shrink: 0;
   height: 100%;
