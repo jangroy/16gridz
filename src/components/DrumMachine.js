@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import DrumPad from "./DrumPad";
 import styled from "styled-components";
 import { data } from "../data";
+import { COLORS } from "../styles/PadColors";
 
 const PadsWrapper = styled.div`
   max-width: 500px;
@@ -19,10 +20,29 @@ const PadsWrapper = styled.div`
 const DrumMachine = props => {
   let padRef = useRef();
 
+  // useless
+  const getRandomColor = (iterable, index) => {
+    var colors = Object.keys(iterable);
+
+    // returns random colors
+    // return iterable[colors[(colors.length * Math.random()) << 0]];
+
+    // return sequence of colors
+    return iterable[colors[index % colors.length]];
+  };
+
   return (
     <PadsWrapper ref={padRef}>
       {data.map((pad, idx) => {
-        return <DrumPad key={idx} hotkey={pad.hotkey} uri={pad.uri} id={idx} />;
+        return (
+          <DrumPad
+            color={getRandomColor(COLORS, idx)}
+            key={idx}
+            hotkey={pad.hotkey}
+            uri={pad.uri}
+            id={idx}
+          />
+        );
       })}
     </PadsWrapper>
   );

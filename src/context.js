@@ -1,5 +1,5 @@
 import React from "react";
 
-const PadsContext = React.createContext();
-
-export default PadsContext;
+export const PadsContext = React.createContext();
+export const GlobalContext = React.createContext();
+export const FirebaseContext = React.createContext();

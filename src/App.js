@@ -1,36 +1,14 @@
 import React, { useState, useEffect } from "react";
 import DrumMachine from "./components/DrumMachine";
 import Transport from "./components/Transport";
-import Top from "./components/Top";
+import Tone from "tone";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
 import styled from "styled-components";
 import theme from "styled-theming";
-import PadsContext from "./context.js";
-import { firebaseConfig } from "./config/firebaseconfig";
-import * as firebase from "firebase/app";
-// Add the Firebase products that you want to use
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
-firebase.initializeApp(firebaseConfig);
-const storage = firebase.storage();
-const storageRef = storage.ref("/samples/kicks/");
+import { GlobalContext } from "./context.js";
 
-storageRef
-  .listAll()
-  .then(result => {
-    console.log("results", result.items);
-    result.items.forEach(itemRef => {
-      itemRef.getDownloadURL().then(url => {
-        console.log("url", url);
-      });
-    });
-  })
-  .catch(error => {
-    console.log(error);
-  });
-
-const MainContainer = styled.div`
-  box-sizing: border-box;
+const PageContainer = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,16 +16,53 @@ const MainContainer = styled.div`
   height: 100vh;
 `;
 
+const Body = styled.section`
+  background: blue;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  /* justify-content: center; */
+  align-items: center;
+`;
+
+const State = styled.div`
+  position: fixed;
+  min-height: 100px;
+  min-width: 100px;
+  background: lightgray;
+  top: 0;
+  right: 0;
+`;
+
 const App = () => {
-  const [bpm, setBpm] = useState(120);
+  const [currentPadId, setCurrentPadId] = useState();
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  // current pad side effects
+  useEffect(
+    function checkcurrentPadId() {
+      if (typeof currentPadId !== "undefined") {
+        console.log("currentPadId", currentPadId);
+      }
+    },
+    [currentPadId]
+  );
 
   return (
-    <PadsContext.Provider value={{ bpm, setBpm }}>
-      <MainContainer>
-        <Top />
-        <DrumMachine />
-      </MainContainer>
-    </PadsContext.Provider>
+    <GlobalContext.Provider
+      value={{ currentPadId, setCurrentPadId, isSidebarOpen, setSidebarOpen }}
+    >
+      <PageContainer>
+        {/* <Header /> */}
+        <Body>
+          <Sidebar />
+          {/* <Transport /> */}
+          <DrumMachine />
+          <State>currentPadId: {currentPadId ? currentPadId : "null"}</State>
+        </Body>
+      </PageContainer>
+    </GlobalContext.Provider>
   );
 };
 

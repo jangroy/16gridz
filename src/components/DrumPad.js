@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useAudio } from "./Audio";
 import styled from "styled-components";
+import { GlobalContext } from "../context";
 
-const PadStyle = styled.div`
-  background: ${props => (props.assigned ? "greenyellow" : "white")};
-  box-shadow: 0 0 10px ${props => (props.playing ? "white" : "transparent")};
+const StyledPad = styled.div`
+  background: ${props => (props.assigned ? props.color : "white")};
+  box-shadow: 0 0 10px
+    ${props => (props.playing && props.assigned ? "white" : "transparent")};
   border-radius: 3px;
   border: 1px solid transparent;
   box-shadow: 5 5 20px grey;
@@ -20,10 +22,15 @@ const PadStyle = styled.div`
   }
 `;
 
-const PadKeyStyle = styled.span``;
+const StyledKPadKey = styled.span`
+  font-size: 25px;
+`;
 
 const DrumPad = props => {
   const [playing, audioPlay] = useAudio(props.uri);
+  const context = useContext(GlobalContext);
+
+  // console.log("props", props);
 
   useEffect(() => {
     window.addEventListener("keydown", hotkeyPress);
@@ -38,19 +45,22 @@ const DrumPad = props => {
     }
   };
   return (
-    <PadStyle
+    <StyledPad
+      color={props.color}
       assigned={props.uri}
       playing={playing}
       onTouchStart={e => {
         audioPlay();
+        context.setCurrentPadId(props.id);
       }}
       onMouseDown={e => {
         audioPlay();
+        context.setCurrentPadId(props.id);
       }}
       onTouchEnd={e => e.preventDefault()}
     >
-      <PadKeyStyle>{props.hotkey}</PadKeyStyle>
-    </PadStyle>
+      <StyledKPadKey>{props.hotkey}</StyledKPadKey>
+    </StyledPad>
   );
 };
 
