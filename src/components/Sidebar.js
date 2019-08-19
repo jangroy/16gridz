@@ -52,28 +52,44 @@ const LibraryItem = styled.div`
 `;
 
 const Sidebar = () => {
-  const [libraryItems, setLibraryItems] = useState([]);
   const context = useContext(GlobalContext);
+  const [libraryItems, setLibraryItems] = useState();
 
   useEffect(() => {
-    const loadStorage = () => {
+    const loadLibrary = () => {
       const storageRef = firebaseStorage.ref("/samples/kicks/");
-      console.log("storageRef", storageRef);
-      let items = [];
+
+      const getUrl = itemRef => {
+        return new Promise(resolve => {
+          itemRef.getDownloadURL().then(url => {
+            resolve(url);
+          });
+        });
+      };
+
+      const getName = itemRef => {
+        return itemRef.name.split(".")[0];
+      };
+      const setDataMap = async itemRef => {
+        return { url: getUrl(itemRef), name: getName(itemRef) };
+      };
 
       storageRef
         .listAll()
-        .then(result => {
-          // change this to map
-          result.items.forEach(itemRef => {
-            itemRef.getDownloadURL().then(url => {
-              items.push({ url, name: itemRef.name.split(".")[0] });
-            });
-          });
+        .then(storageResults => {
+          const mapItems = async () => {
+            return await Promise.all(
+              storageResults.items.map(itemRef => {
+                return setDataMap(itemRef);
+              })
+            );
+          };
 
-          console.log("pushed items", items);
+          const data = mapItems();
+          console.log("data", data);
 
-          setLibraryItems(items);
+          setLibraryItems(data);
+          // let items = await storageResults.items.map(async itemRef => {});
         })
         .catch(error => {
           console.log(
@@ -82,14 +98,21 @@ const Sidebar = () => {
           );
         });
     };
-    loadStorage();
-    console.log("library-items", libraryItems);
+    loadLibrary();
   }, []);
 
   useEffect(
     function logStateItems() {
-      if (libraryItems.length > 0) {
-        console.log("library state items", libraryItems, libraryItems.length);
+      if (libraryItems && libraryItems.length > 0) {
+        console.log(
+          "library state items",
+          libraryItems,
+          "length:",
+          libraryItems.length
+        );
+        for (const item of libraryItems) {
+          console.log("item", item);
+        }
       }
     },
     [libraryItems]
@@ -101,9 +124,10 @@ const Sidebar = () => {
       onClick={e => context.setSidebarOpen(!context.isSidebarOpen)}
     >
       <StyledBrowser>
-        {libraryItems.map((item, idx) => (
-          <LibraryItem key={idx}>{item.name}</LibraryItem>
-        ))}
+        {libraryItems &&
+          libraryItems.map((item, idx) => (
+            <LibraryItem key={idx}>{item.name}</LibraryItem>
+          ))}
       </StyledBrowser>
     </StyledSidebar>
   );
