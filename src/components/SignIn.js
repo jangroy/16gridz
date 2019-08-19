@@ -1,9 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import styled from "styled-components";
-import * as firebase from "firebase/app";
 import * as firebaseui from "firebaseui";
-import "firebase/auth";
-import { firebaseConfig } from "../config/firebaseconfig";
 import { FirebaseContext } from "../context";
 
 const SignInWrapper = styled.div`

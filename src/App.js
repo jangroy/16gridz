@@ -6,10 +6,7 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import styled from "styled-components";
 import theme from "styled-theming";
-import { FirebaseContext } from "./context.js";
-import * as firebase from "firebase/app";
-import * as firebaseui from "firebaseui";
-import { firebaseConfig } from "./config/firebaseconfig";
+import { GlobalContext } from "./context.js";
 
 const PageContainer = styled.main`
   display: flex;
@@ -25,57 +22,47 @@ const Body = styled.section`
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 `;
 
+const State = styled.div`
+  position: fixed;
+  min-height: 100px;
+  min-width: 100px;
+  background: lightgray;
+  top: 0;
+  right: 0;
+`;
+
 const App = () => {
-  const [bpm, setBpm] = useState(120);
-  const [firebaseInit, setFirebaseInit] = useState();
-  const [ui, setUi] = useState();
-  const [uiConfig, setUiConfig] = useState();
+  const [currentPadId, setCurrentPadId] = useState();
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    firebase.initializeApp(firebaseConfig);
-    setFirebaseInit(true);
-  }, []);
-
-  useEffect(() => {
-    if (firebaseInit) {
-      // Initialize the FirebaseUI Widget using Firebase.
-      const ui = new firebaseui.auth.AuthUI(firebase.auth());
-      setUi(ui);
-      // The start method will wait until the DOM is loaded.
-      const uiConfig = {
-        signInSuccessUrl: "http://localhost:3000",
-        signInOptions: [
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          firebase.auth.EmailAuthProvider.PROVIDER_ID
-        ],
-        // tosUrl and privacyPolicyUrl accept either url string or a callback
-        // function.
-        // Terms of service url/callback.
-        // tosUrl: "<your-tos-url>",
-        // Privacy policy url/callback.
-        privacyPolicyUrl: function() {
-          window.location.assign("http://localhost:3000");
-        }
-      };
-      setUiConfig(uiConfig);
-    }
-  }, [firebaseInit]);
+  // current pad side effects
+  useEffect(
+    function checkcurrentPadId() {
+      if (typeof currentPadId !== "undefined") {
+        console.log("currentPadId", currentPadId);
+      }
+    },
+    [currentPadId]
+  );
 
   return (
-    <FirebaseContext.Provider value={{ ui, uiConfig }}>
+    <GlobalContext.Provider
+      value={{ currentPadId, setCurrentPadId, isSidebarOpen, setSidebarOpen }}
+    >
       <PageContainer>
-        <Header />
+        {/* <Header /> */}
         <Body>
-          {/* <Sidebar /> */}
+          <Sidebar />
           {/* <Transport /> */}
           <DrumMachine />
+          <State>currentPadId: {currentPadId ? currentPadId : "null"}</State>
         </Body>
       </PageContainer>
-    </FirebaseContext.Provider>
+    </GlobalContext.Provider>
   );
 };
 
