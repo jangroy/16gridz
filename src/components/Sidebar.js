@@ -70,8 +70,10 @@ const Sidebar = () => {
       const getName = itemRef => {
         return itemRef.name.split(".")[0];
       };
-      const setDataMap = async itemRef => {
-        return { url: getUrl(itemRef), name: getName(itemRef) };
+      const setDataMap = async item => {
+        const url = await getUrl(item);
+        const name = getName(item);
+        return { url, name };
       };
 
       storageRef
@@ -80,6 +82,7 @@ const Sidebar = () => {
           const mapItems = async () => {
             return await Promise.all(
               storageResults.items.map(itemRef => {
+                // i guess this will resolve instantly
                 return setDataMap(itemRef);
               })
             );
