@@ -56,40 +56,34 @@ const Sidebar = () => {
   const context = useContext(GlobalContext);
 
   useEffect(() => {
-    (async () => {
-      const loadStorage = () => {
-        return new Promise((resolve, reject) => {
-          const storageRef = firebaseStorage.ref("/samples/kicks/");
-          console.log("storageRef", storageRef);
-          let items = [];
+    const loadStorage = () => {
+      const storageRef = firebaseStorage.ref("/samples/kicks/");
+      console.log("storageRef", storageRef);
+      let items = [];
 
-          storageRef
-            .listAll()
-            .then(result => {
-              // change this to map
-              result.items.forEach(itemRef => {
-                itemRef.getDownloadURL().then(url => {
-                  items.push({ url, name: itemRef.name.split(".")[0] });
-                });
-              });
-
-              console.log("pushed items", items);
-
-              setLibraryItems(items);
-              resolve();
-            })
-            .catch(error => {
-              console.log(
-                "There was an error fetching from Firebase storage:",
-                error
-              );
-              reject();
+      storageRef
+        .listAll()
+        .then(result => {
+          // change this to map
+          result.items.forEach(itemRef => {
+            itemRef.getDownloadURL().then(url => {
+              items.push({ url, name: itemRef.name.split(".")[0] });
             });
+          });
+
+          console.log("pushed items", items);
+
+          setLibraryItems(items);
+        })
+        .catch(error => {
+          console.log(
+            "There was an error fetching from Firebase storage:",
+            error
+          );
         });
-      };
-      await loadStorage();
-      console.log("library-items", libraryItems);
-    })();
+    };
+    loadStorage();
+    console.log("library-items", libraryItems);
   }, []);
 
   useEffect(

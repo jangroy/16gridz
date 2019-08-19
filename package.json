@@ -12,7 +12,8 @@
     "react-sound": "^1.2.0",
     "styled-components": "^4.3.2",
     "styled-theming": "^2.2.0",
-    "tone": "^13.4.9"
+    "tone": "^13.4.9",
+    "webmidi": "^2.5.0"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import styled from "styled-components";
 import theme from "styled-theming";
+import { enableWebMidi } from "./webmidi";
 import { GlobalContext } from "./context.js";
 
 const PageContainer = styled.main`
@@ -39,6 +40,10 @@ const App = () => {
   const [currentPadId, setCurrentPadId] = useState();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
+  useEffect(() => {
+    enableWebMidi();
+  }, []);
+
   // current pad side effects
   useEffect(
     function checkcurrentPadId() {
@@ -59,7 +64,7 @@ const App = () => {
           <Sidebar />
           {/* <Transport /> */}
           <DrumMachine />
-          <State>currentPadId: {currentPadId ? currentPadId : "null"}</State>
+          <State>currentPadId: {currentPadId}</State>
         </Body>
       </PageContainer>
     </GlobalContext.Provider>
