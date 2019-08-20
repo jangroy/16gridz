@@ -1,8 +1,10 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import DrumPad from "./DrumPad";
 import styled from "styled-components";
 import { data } from "../data";
+
 import { COLORS } from "../styles/PadColors";
+import { GlobalContext } from "../context";
 
 const PadsWrapper = styled.div`
   max-width: 500px;
@@ -19,6 +21,9 @@ const PadsWrapper = styled.div`
 
 const DrumMachine = props => {
   let padRef = useRef();
+  const context = useContext(GlobalContext);
+  // implement react-dnd
+  const libraryItems = context.libraryItems;
 
   // useless
   const getRandomColor = (iterable, index) => {

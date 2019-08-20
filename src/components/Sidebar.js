@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { GlobalContext } from "../context";
-import { firebaseStorage } from "../config/firebase";
+import Loading from "./generic/Loading";
 
 const StyledSidebar = styled.div`
   /* width: 70px; */
@@ -53,69 +53,15 @@ const LibraryItem = styled.div`
 
 const Sidebar = () => {
   const context = useContext(GlobalContext);
-  const [libraryItems, setLibraryItems] = useState();
-
-  useEffect(() => {
-    const loadLibrary = () => {
-      const storageRef = firebaseStorage.ref("/samples/kicks/");
-
-      const getUrl = itemRef => {
-        return new Promise(resolve => {
-          itemRef.getDownloadURL().then(url => {
-            resolve(url);
-          });
-        });
-      };
-
-      const getName = itemRef => {
-        return itemRef.name.split(".")[0];
-      };
-      const setDataMap = async item => {
-        const url = await getUrl(item);
-        const name = getName(item);
-        return { url, name };
-      };
-
-      storageRef
-        .listAll()
-        .then(storageResults => {
-          const mapItems = async () => {
-            return await Promise.all(
-              storageResults.items.map(itemRef => {
-                // i guess this will resolve instantly
-                return setDataMap(itemRef);
-              })
-            );
-          };
-
-          const data = mapItems();
-          console.log("data", data);
-
-          setLibraryItems(data);
-          // let items = await storageResults.items.map(async itemRef => {});
-        })
-        .catch(error => {
-          console.log(
-            "There was an error fetching from Firebase storage:",
-            error
-          );
-        });
-    };
-    loadLibrary();
-  }, []);
+  const libraryItems = context.libraryItems;
+  const [loading, setLoading] = useState(false);
 
   useEffect(
     function logStateItems() {
       if (libraryItems && libraryItems.length > 0) {
-        console.log(
-          "library state items",
-          libraryItems,
-          "length:",
-          libraryItems.length
-        );
-        for (const item of libraryItems) {
-          console.log("item", item);
-        }
+        setLoading(false);
+      } else {
+        setLoading(true);
       }
     },
     [libraryItems]
@@ -127,6 +73,7 @@ const Sidebar = () => {
       onClick={e => context.setSidebarOpen(!context.isSidebarOpen)}
     >
       <StyledBrowser>
+        {loading && <Loading />}
         {libraryItems &&
           libraryItems.map((item, idx) => (
             <LibraryItem key={idx}>{item.name}</LibraryItem>
