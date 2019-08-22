@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { GlobalContext } from "../context";
 import Loading from "./generic/Loading";
+import { useDrag } from "react-dnd";
+import { ItemTypes } from "../dnd/constants";
 
 const StyledSidebar = styled.div`
   /* width: 70px; */
@@ -23,7 +25,7 @@ const StyledBrowser = styled.div`
   user-select: none;
 `;
 
-const LibraryItem = styled.div`
+const StorageItem = styled.div`
   background: lightgrey;
   width: 100%;
   white-space: nowrap;
@@ -53,18 +55,25 @@ const LibraryItem = styled.div`
 
 const Sidebar = () => {
   const context = useContext(GlobalContext);
-  const libraryItems = context.libraryItems;
-  const [loading, setLoading] = useState(false);
+  const { storageItems } = context;
 
+  const [{ isDragging }, drag] = useDrag({
+    item: { type: ItemTypes.SOUND },
+    collect: monitor => ({
+      isDragging: !!monitor.isDragging()
+    })
+  });
+
+  const [loading, setLoading] = useState(false);
   useEffect(
     function logStateItems() {
-      if (libraryItems && libraryItems.length > 0) {
+      if (storageItems && storageItems.length > 0) {
         setLoading(false);
       } else {
         setLoading(true);
       }
     },
-    [libraryItems]
+    [storageItems]
   );
 
   return (
@@ -74,9 +83,11 @@ const Sidebar = () => {
     >
       <StyledBrowser>
         {loading && <Loading />}
-        {libraryItems &&
-          libraryItems.map((item, idx) => (
-            <LibraryItem key={idx}>{item.name}</LibraryItem>
+        {storageItems &&
+          storageItems.map((item, idx) => (
+            <StorageItem ref={drag} key={idx}>
+              {item.name}
+            </StorageItem>
           ))}
       </StyledBrowser>
     </StyledSidebar>
