@@ -5,7 +5,7 @@ export const useFirebaseStorage = () => {
   const [storageItems, setStorageItems] = useState();
 
   useEffect(function loadLibrary() {
-    const storageRef = firebaseStorage.ref("/samples/kicks/");
+    const storageRef = firebaseStorage.ref("/samples/");
 
     const getUrl = itemRef => {
       return new Promise(resolve => {
@@ -14,7 +14,6 @@ export const useFirebaseStorage = () => {
         });
       });
     };
-
     const getName = itemRef => {
       return itemRef.name.split(".")[0];
     };
@@ -23,18 +22,26 @@ export const useFirebaseStorage = () => {
       const name = getName(item);
       return { url, name };
     };
+    const mapItems = async results => {
+      return await Promise.all(
+        results.items.map(itemRef => {
+          return normalizeStorageItems(itemRef);
+        })
+      );
+    };
 
     storageRef
       .listAll()
       .then(storageResults => {
-        const mapItems = async () => {
-          return await Promise.all(
-            storageResults.items.map(itemRef => {
-              return normalizeStorageItems(itemRef);
-            })
-          );
-        };
-        mapItems().then(items => setStorageItems(items));
+        // get heirarchy structure from all folders and make a map
+        storageResults.prefixes.map(folder => {
+          folder
+            .listAll()
+            .then(items => mapItems(items).then(res => setStorageItems(res)));
+
+          // mapItems(folder).then(items => console.log(items));
+        });
+        // mapItems(storageResults).then(items => setStorageItems(items));
       })
       .catch(error => {
         console.log(

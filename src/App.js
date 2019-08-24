@@ -26,6 +26,7 @@ const Body = styled.section`
   width: 100%;
   display: flex;
   flex-direction: row;
+  overflow-y: auto;
   /* justify-content: center; */
   align-items: center;
 `;
