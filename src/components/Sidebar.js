@@ -4,24 +4,26 @@ import { GlobalContext } from "../context";
 import Loading from "./generic/Loading";
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "../dnd/constants";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const StyledSidebar = styled.div`
-  /* width: 70px; */
-  width: ${({ isSidebarOpen }) => (isSidebarOpen ? "300px" : "100px")};
-  /* width: 100%; */
-  /* flex: 1 15%; */
+  width: ${({ isSidebarOpen }) => (isSidebarOpen ? "300px" : "50px")};
   display: flex;
+  flex-direction: column;
   flex-shrink: 0;
   height: 100%;
-  background: gray;
-  /* padding: 20px; */
+  transition: 0.2s ease;
+  background: lightgray;
+  overflow: hidden;
 `;
 
 const StyledBrowser = styled.div`
   background: white;
   flex-shrink: 0;
   width: 100%;
-  overflow-y: auto;
+  flex: 1 1;
+  overflow-y: ${({ isSidebarOpen }) => (isSidebarOpen ? "auto" : "none")};
   user-select: none;
 `;
 
@@ -35,8 +37,11 @@ const StorageItem = styled.div`
   padding-left: 5px;
   align-items: center;
   box-shadow: 0 0 5px transparent;
-  transition: 0.2s ease;
+  transition: 0.1s ease;
   position: relative;
+  &:hover {
+    background: white;
+  }
   &:before {
     content: "";
     position: absolute;
@@ -50,6 +55,20 @@ const StorageItem = styled.div`
     :hover {
       box-shadow: -5px 5px 20px 5px black;
     }
+  }
+`;
+
+const StyledMenu = styled.div`
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s ease;
+  &:hover {
+    background: white;
   }
 `;
 
@@ -77,19 +96,27 @@ const Sidebar = () => {
   );
 
   return (
-    <StyledSidebar
-      isSidebarOpen={context.isSidebarOpen}
-      onClick={e => context.setSidebarOpen(!context.isSidebarOpen)}
-    >
-      <StyledBrowser>
-        {loading && <Loading />}
-        {storageItems &&
-          storageItems.map((item, idx) => (
-            <StorageItem ref={drag} key={idx}>
-              {item.name}
-            </StorageItem>
-          ))}
-      </StyledBrowser>
+    <StyledSidebar isSidebarOpen={context.isSidebarOpen}>
+      <StyledMenu onClick={e => context.setSidebarOpen(!context.isSidebarOpen)}>
+        <FontAwesomeIcon icon={faBars} size="lg" />
+      </StyledMenu>
+      {context.isSidebarOpen && (
+        <>
+          {loading && <Loading />}
+          <StyledBrowser isSidebarOpen={context.isSidebarOpen}>
+            {storageItems &&
+              storageItems.map((item, idx) => (
+                <StorageItem
+                  ref={drag}
+                  key={idx}
+                  onClick={e => context.setSidebarOpen(true)}
+                >
+                  {item.name}
+                </StorageItem>
+              ))}
+          </StyledBrowser>
+        </>
+      )}
     </StyledSidebar>
   );
 };

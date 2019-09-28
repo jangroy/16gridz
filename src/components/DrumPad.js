@@ -5,19 +5,25 @@ import { GlobalContext } from "../context";
 
 const StyledPad = styled.div`
   background: ${props => (props.assigned ? props.color : "white")};
+  background-image: ${props =>
+    props.assigned && props.playing
+      ? `radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.6),
+      transparent
+      )`
+      : "white"};
   box-shadow: 0 0 10px
-    ${props => (props.playing && props.assigned ? "white" : "transparent")};
+    ${props => (props.assigned && props.playing ? "white" : "transparent")};
   border-radius: 3px;
   border: 1px solid transparent;
-  box-shadow: 5 5 20px grey;
   transition: 0.05s linear;
   padding: 10px;
   display: flex;
   justify-content: flex-end;
   user-select: none;
   font-size: 12px;
-  /* box-shadow: 0 0 10px transparent; */
-  :focus {
+  &:focus {
     outline: none;
   }
 `;

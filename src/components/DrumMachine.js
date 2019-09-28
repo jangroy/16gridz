@@ -3,7 +3,7 @@ import DrumPad from "./DrumPad";
 import styled from "styled-components";
 import { data } from "../data";
 
-import { COLORS } from "../styles/PadColors";
+import { COLORS } from "../styles/global/variables/PadColors";
 import { GlobalContext } from "../context";
 
 const PadsWrapper = styled.div`

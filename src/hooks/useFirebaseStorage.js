@@ -34,7 +34,7 @@ export const useFirebaseStorage = () => {
       .listAll()
       .then(storageResults => {
         // get heirarchy structure from all folders and make a map
-        storageResults.prefixes.map(folder => {
+        storageResults.prefixes.forEach(folder => {
           folder
             .listAll()
             .then(items => mapItems(items).then(res => setStorageItems(res)));
