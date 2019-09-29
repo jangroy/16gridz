@@ -4,18 +4,29 @@ import styled from "styled-components";
 import { data } from "../data";
 import { COLORS } from "../styles/global/variables/padColors";
 import { GlobalContext } from "../context";
+import { device } from "../styles/global/variables/sizes";
 
 const DrumMachineWrapper = styled.div`
+  background: lightblue;
+  height: 100%;
+  width: 100%;
+  flex: 1 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+// work on proper responsive grids
+const StyledDrumMachine = styled.div`
   max-width: 500px;
-  max-height: 50%;
-  width: 100vw;
-  height: 100vw;
-  padding: 15px;
-  background: #404040;
+  max-height: 500px;
+  width: 100%;
+  height: 100%;
   display: grid;
+  background: #404040;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 3%;
-  box-sizing: border-box;
+  padding: 15px;
 `;
 
 const DrumMachine = props => {
@@ -36,18 +47,20 @@ const DrumMachine = props => {
   };
 
   return (
-    <DrumMachineWrapper ref={padRef}>
-      {data.map((pad, idx) => {
-        return (
-          <DrumPad
-            color={getRandomColor(COLORS, idx)}
-            key={idx}
-            hotkey={pad.hotkey}
-            uri={pad.uri}
-            id={idx}
-          />
-        );
-      })}
+    <DrumMachineWrapper>
+      <StyledDrumMachine ref={padRef}>
+        {data.map((pad, idx) => {
+          return (
+            <DrumPad
+              color={getRandomColor(COLORS, idx)}
+              key={idx}
+              hotkey={pad.hotkey}
+              uri={pad.uri}
+              id={idx}
+            />
+          );
+        })}
+      </StyledDrumMachine>
     </DrumMachineWrapper>
   );
 };

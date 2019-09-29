@@ -5,7 +5,7 @@ import DrumMachine from "./components/DrumMachine";
 import Transport from "./components/Transport";
 import Tone from "tone";
 import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/Sidebar/Sidebar";
 import styled from "styled-components";
 import theme from "styled-theming";
 import { enableWebMidi } from "./webmidi";
@@ -30,6 +30,7 @@ const Body = styled.section`
   overflow-y: auto;
   align-items: center;
   transition: 0.2s ease;
+
   @media ${device.tablet} {
     flex-direction: row;
   }
