@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { firebaseStorage } from "../config/firebase";
 
 export const useFirebaseStorage = () => {
-  const [storageItems, setStorageItems] = useState();
+  const [storageItems, setStorageItems] = useState([]);
+  const [folders, setFolders] = useState([]);
 
   useEffect(function loadLibrary() {
     const storageRef = firebaseStorage.ref("/samples/");
@@ -20,7 +21,7 @@ export const useFirebaseStorage = () => {
     const normalizeStorageItems = async item => {
       const url = await getUrl(item);
       const name = getName(item);
-      return { url, name };
+      return { url, name, parent: item.parent.name };
     };
     const mapItems = async results => {
       return await Promise.all(
@@ -35,9 +36,18 @@ export const useFirebaseStorage = () => {
       .then(storageResults => {
         // get heirarchy structure from all folders and make a map
         storageResults.prefixes.forEach(folder => {
-          folder
-            .listAll()
-            .then(items => mapItems(items).then(res => setStorageItems(res)));
+          // setFolders(_folders => {
+          //   folders.push(folder.name);
+          // });
+          folder.listAll().then(folderItems =>
+            mapItems(folderItems).then(res => {
+              console.log("res?", res);
+              setStorageItems(_storageItems => {
+                console.log("storage", _storageItems);
+                _storageItems.concat({ [folder]: res });
+              });
+            })
+          );
 
           // mapItems(folder).then(items => console.log(items));
         });

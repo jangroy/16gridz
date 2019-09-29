@@ -6,15 +6,7 @@ import { GlobalContext } from "../context";
 
 const StyledPad = styled.div`
   background: ${({ assigned, color }) => (assigned ? color : "white")};
-  background-image: ${({ assigned, playing }) =>
-    assigned && playing
-      ? `radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.6),
-      transparent
-      )`
-      : "none"};
-  box-shadow: 0 0 10px
+  box-shadow: 0 0 5px
     ${({ assigned, playing }) =>
       assigned && playing ? "white" : "transparent"};
   border-radius: 3px;
@@ -22,12 +14,24 @@ const StyledPad = styled.div`
   transition: 0.05s linear;
   padding: 10px;
   display: flex;
+  position: relative;
   justify-content: flex-end;
   user-select: none;
   font-size: 12px;
   &:focus {
     outline: none;
   }
+`;
+
+const StyledRadialGlow = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8), transparent);
+  opacity: ${({ assigned, playing }) => (assigned && playing ? 1 : 0.5)};
+  transition: 0.1s ease;
 `;
 
 const StyledKPadKey = styled.span`
@@ -71,6 +75,7 @@ const DrumPad = props => {
         context.setCurrentPadId(props.id);
       }}
     >
+      <StyledRadialGlow assigned={props.uri} playing={playing} />
       <StyledKPadKey>{props.hotkey}</StyledKPadKey>
     </StyledPad>
   );
