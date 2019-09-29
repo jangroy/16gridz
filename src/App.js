@@ -10,25 +10,29 @@ import styled from "styled-components";
 import theme from "styled-theming";
 import { enableWebMidi } from "./webmidi";
 import { GlobalContext } from "./context.js";
-import { useFirebaseStorage } from "./hooks/useFirebaseStorage";
+import { useFirebaseStorage } from "./hooks/firebase";
+import { device } from "./styles/global/variables/sizes";
 
 const PageContainer = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 `;
 
 const Body = styled.section`
-  background: blue;
   flex: 1;
   width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   overflow-y: auto;
-  /* justify-content: center; */
   align-items: center;
+  transition: 0.2s ease;
+  @media ${device.tablet} {
+    flex-direction: row;
+  }
 `;
 
 const State = styled.div`
@@ -76,7 +80,7 @@ const App = () => {
             <Sidebar />
             {/* <Transport /> */}
             <DrumMachine />
-            <State>currentPadId: {currentPadId}</State>
+            {/* <State>currentPadId: {currentPadId}</State> */}
           </Body>
         </PageContainer>
       </DndProvider>

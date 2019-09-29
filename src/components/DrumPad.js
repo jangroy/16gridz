@@ -1,20 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useAudio } from "./Audio";
+import { useAudio } from "../hooks/audio";
+import { useLongPress } from "../hooks/pads";
 import styled from "styled-components";
 import { GlobalContext } from "../context";
 
 const StyledPad = styled.div`
-  background: ${props => (props.assigned ? props.color : "white")};
-  background-image: ${props =>
-    props.assigned && props.playing
+  background: ${({ assigned, color }) => (assigned ? color : "white")};
+  background-image: ${({ assigned, playing }) =>
+    assigned && playing
       ? `radial-gradient(
       circle,
       rgba(255, 255, 255, 0.6),
       transparent
       )`
-      : "white"};
+      : "none"};
   box-shadow: 0 0 10px
-    ${props => (props.assigned && props.playing ? "white" : "transparent")};
+    ${({ assigned, playing }) =>
+      assigned && playing ? "white" : "transparent"};
   border-radius: 3px;
   border: 1px solid transparent;
   transition: 0.05s linear;
@@ -34,9 +36,8 @@ const StyledKPadKey = styled.span`
 
 const DrumPad = props => {
   const [playing, audioPlay] = useAudio(props.uri);
+  const { setLongPress } = useLongPress(() => alert("longpressed"), 500);
   const context = useContext(GlobalContext);
-
-  // console.log("props", props);
 
   useEffect(() => {
     window.addEventListener("keydown", hotkeyPress);
@@ -50,6 +51,7 @@ const DrumPad = props => {
       audioPlay();
     }
   };
+
   return (
     <StyledPad
       color={props.color}
@@ -57,13 +59,17 @@ const DrumPad = props => {
       playing={playing}
       onTouchStart={e => {
         audioPlay();
+        setLongPress(true);
         context.setCurrentPadId(props.id);
+      }}
+      onTouchEnd={e => {
+        e.preventDefault();
+        setLongPress(false);
       }}
       onMouseDown={e => {
         audioPlay();
         context.setCurrentPadId(props.id);
       }}
-      onTouchEnd={e => e.preventDefault()}
     >
       <StyledKPadKey>{props.hotkey}</StyledKPadKey>
     </StyledPad>

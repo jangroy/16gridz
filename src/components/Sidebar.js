@@ -1,25 +1,32 @@
 import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { GlobalContext } from "../context";
-import Loading from "./generic/Loading";
+import Loading from "./generic/Loading/Loading";
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "../dnd/constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { device } from "../styles/global/variables/sizes";
 
 const StyledSidebar = styled.div`
-  width: ${({ isSidebarOpen }) => (isSidebarOpen ? "300px" : "50px")};
+  max-height: 50%;
+  height: ${({ isSidebarOpen }) => (isSidebarOpen ? "100%" : "50px")};
+  width: 100%;
   display: flex;
-  flex-direction: column;
   flex-shrink: 0;
-  height: 100%;
-  transition: 0.2s ease;
+  flex-direction: column;
   background: lightgray;
   overflow: hidden;
+  overscroll-behavior: contain;
+
+  @media ${device.tablet} {
+    max-height: 100%;
+    height: 100%;
+    width: ${({ isSidebarOpen }) => (isSidebarOpen ? "300px" : "50px")};
+  }
 `;
 
 const StyledBrowser = styled.div`
-  background: white;
   flex-shrink: 0;
   width: 100%;
   flex: 1 1;
@@ -28,7 +35,6 @@ const StyledBrowser = styled.div`
 `;
 
 const StorageItem = styled.div`
-  background: lightgrey;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;

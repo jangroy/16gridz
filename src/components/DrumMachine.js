@@ -2,13 +2,12 @@ import React, { useRef, useContext } from "react";
 import DrumPad from "./DrumPad";
 import styled from "styled-components";
 import { data } from "../data";
-
-import { COLORS } from "../styles/global/variables/PadColors";
+import { COLORS } from "../styles/global/variables/padColors";
 import { GlobalContext } from "../context";
 
-const PadsWrapper = styled.div`
+const DrumMachineWrapper = styled.div`
   max-width: 500px;
-  max-height: 500px;
+  max-height: 50%;
   width: 100vw;
   height: 100vw;
   padding: 15px;
@@ -37,7 +36,7 @@ const DrumMachine = props => {
   };
 
   return (
-    <PadsWrapper ref={padRef}>
+    <DrumMachineWrapper ref={padRef}>
       {data.map((pad, idx) => {
         return (
           <DrumPad
@@ -49,7 +48,7 @@ const DrumMachine = props => {
           />
         );
       })}
-    </PadsWrapper>
+    </DrumMachineWrapper>
   );
 };
 

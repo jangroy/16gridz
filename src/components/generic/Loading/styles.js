@@ -1,4 +1,3 @@
-import React from "react";
 import styled, { keyframes } from "styled-components";
 const skBounce = keyframes`
     0%, 100% { 
@@ -15,14 +14,14 @@ const skRotate = keyframes`
     }
 `;
 
-const LoadingWrapper = styled.div`
+export const LoadingWrapper = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
   overflow: hidden;
 `;
 
-const Spinner = styled.div`
+export const Spinner = styled.div`
   margin: 100px auto;
   width: 40px;
   height: 40px;
@@ -31,7 +30,7 @@ const Spinner = styled.div`
   animation: ${skRotate} 2s infinite linear;
 `;
 
-const Dot = styled.div`
+export const Dot = styled.div`
   width: 60%;
   height: 60%;
   display: inline-block;
@@ -43,21 +42,8 @@ const Dot = styled.div`
   border-radius: 100%;
   animation: ${skBounce} 2s infinite ease-in-out;
 `;
-const Dot2 = styled(Dot)`
+export const Dot2 = styled(Dot)`
   top: auto;
   bottom: 0;
   animation-delay: -1s;
 `;
-
-const Loading = () => {
-  return (
-    <LoadingWrapper>
-      <Spinner>
-        <Dot />
-        <Dot2 />
-      </Spinner>
-    </LoadingWrapper>
-  );
-};
-
-export default Loading;
