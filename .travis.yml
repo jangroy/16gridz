@@ -5,5 +5,9 @@ cache:
   directories:
     - node_modules
 script:
-  - npm test
+  # - npm test
   - npm run build
+deploy:
+  provider: firebase
+  token:
+    secure: "1/413CZ3kVQQkEC1irQraHPtp7DFs4GRPMBnMmpZRKUs2a5TM7MNLndOuCZy-L1czH"
