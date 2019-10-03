@@ -28,7 +28,7 @@ export const StyledBrowser = styled.div`
 `;
 
 export const StorageItem = styled.div`
-  width: 100%;
+  width: auto;
   white-space: nowrap;
   overflow: hidden;
   height: 25px;

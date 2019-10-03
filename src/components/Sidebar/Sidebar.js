@@ -24,9 +24,12 @@ const Sidebar = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  console.log("storageItems", storageItems);
   useEffect(
-    function logStateItems() {
-      if (storageItems && storageItems.length > 0) {
+    function handleLoading() {
+      // console.log("storageItems", storageItems);
+      console.log("length ", Object.keys(storageItems).length);
+      if (storageItems && Object.keys(storageItems).length > 0) {
         setLoading(false);
       } else {
         setLoading(true);
@@ -42,16 +45,16 @@ const Sidebar = () => {
       </StyledMenu>
       {context.isSidebarOpen && (
         <>
-          {loading && <Loading />}
+          {/* {loading && <Loading />} */}
           <StyledBrowser isSidebarOpen={context.isSidebarOpen}>
             {storageItems &&
-              storageItems.map((item, idx) => (
+              Object.keys(storageItems).map((folder, idx) => (
                 <StorageItem
                   ref={drag}
                   key={idx}
                   onClick={e => context.setSidebarOpen(true)}
                 >
-                  {item.name}
+                  {folder}
                 </StorageItem>
               ))}
           </StyledBrowser>

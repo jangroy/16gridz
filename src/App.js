@@ -4,7 +4,6 @@ import HTML5Backend from "react-dnd-html5-backend";
 import DrumMachine from "./components/DrumMachine";
 import Transport from "./components/Transport";
 import Tone from "tone";
-import Header from "./components/Header";
 import Sidebar from "./components/Sidebar/Sidebar";
 import styled from "styled-components";
 import theme from "styled-theming";
@@ -76,12 +75,10 @@ const App = () => {
     >
       <DndProvider backend={HTML5Backend}>
         <PageContainer>
-          {/* <Header /> */}
           <Body>
             <Sidebar />
-            {/* <Transport /> */}
+            <Transport />
             <DrumMachine />
-            {/* <State>currentPadId: {currentPadId}</State> */}
           </Body>
         </PageContainer>
       </DndProvider>
