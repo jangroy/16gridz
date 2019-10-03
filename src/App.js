@@ -77,7 +77,7 @@ const App = () => {
         <PageContainer>
           <Body>
             <Sidebar />
-            <Transport />
+            {/* <Transport /> */}
             <DrumMachine />
           </Body>
         </PageContainer>
